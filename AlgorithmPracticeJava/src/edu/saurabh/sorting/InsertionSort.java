@@ -27,5 +27,6 @@ public class InsertionSort {
 		sortInPlace(unsorted);
 		System.out.println(Arrays.toString(unsorted));
 		
+		
 	}
 }
