@@ -1,4 +1,4 @@
-package edu.saurabh.datatypes;
+package edu.saurabh.stacks;
 
 import java.util.EmptyStackException;
 
