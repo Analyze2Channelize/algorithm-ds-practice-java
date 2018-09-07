@@ -3,18 +3,24 @@ package edu.saurabh.graphs;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class QuickUnionUF {
+public class WeightedQuickUnionByHeight {
 
 	private int[] parents;
+	private int[] height; // size of tree rooted at i
 	int count;
 
-	public QuickUnionUF(int N){
+	public WeightedQuickUnionByHeight(int N){
 		count = N;
 		parents = new int[N];
 		//initially each node in its own component
 		for(int i=0 ; i< N;i++) {
 			parents[i] =i;
+			height[i] = 0;
 		}
+	}
+
+	public int[] getHeight() {
+		return height;
 	}
 
 	public int count() {
@@ -35,9 +41,8 @@ public class QuickUnionUF {
 	}
 
 	public int getRoot(int p) {
-		int root = p;
-		while(root!=parents[root]) {
-			root = parents[root];
+		while(p!=parents[p]) {
+			p = parents[p];
 		}
 		return p;
 	}
@@ -48,12 +53,21 @@ public class QuickUnionUF {
 		int rootOfP = getRoot(p);
 		int rootOfQ = getRoot(q);
 		if(rootOfP == rootOfQ) return;
-		parents[rootOfP] = rootOfQ;
+		//shorter tree will point to taller one
+		if(height[rootOfP] < height[rootOfQ]) {
+			parents[rootOfP] = rootOfQ;
+		}else if(height[rootOfP] > height[rootOfQ]) {
+			parents[rootOfQ] = rootOfP;
+		}else {
+			parents[rootOfQ] = rootOfP;
+			// increment the height of parent by 1
+			height[rootOfP]++;
+		}
 		count--;
 	}
 	public static void main(String[] args) {
 		int n = StdIn.readInt();
-		QuickUnionUF uf = new QuickUnionUF(n);
+		WeightedQuickUnionByHeight uf = new WeightedQuickUnionByHeight(n);
 		while (!StdIn.isEmpty()) {
 			int p = StdIn.readInt();
 			int q = StdIn.readInt();

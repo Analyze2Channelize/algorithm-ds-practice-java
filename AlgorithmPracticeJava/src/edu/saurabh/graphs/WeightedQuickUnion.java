@@ -3,18 +3,25 @@ package edu.saurabh.graphs;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class QuickUnionUF {
+public class WeightedQuickUnion {
 
 	private int[] parents;
+	private int[] size; // size of tree rooted at i
+
 	int count;
 
-	public QuickUnionUF(int N){
+	public WeightedQuickUnion(int N){
 		count = N;
 		parents = new int[N];
 		//initially each node in its own component
 		for(int i=0 ; i< N;i++) {
 			parents[i] =i;
+			size[i] = 1;
 		}
+	}
+
+	public int[] getSize() {
+		return size;
 	}
 
 	public int count() {
@@ -35,9 +42,8 @@ public class QuickUnionUF {
 	}
 
 	public int getRoot(int p) {
-		int root = p;
-		while(root!=parents[root]) {
-			root = parents[root];
+		while(p!=parents[p]) {
+			p = parents[p];
 		}
 		return p;
 	}
@@ -48,12 +54,19 @@ public class QuickUnionUF {
 		int rootOfP = getRoot(p);
 		int rootOfQ = getRoot(q);
 		if(rootOfP == rootOfQ) return;
-		parents[rootOfP] = rootOfQ;
+		if(size[rootOfP] < size[rootOfQ]) {
+			parents[rootOfP] = rootOfQ;
+			size[rootOfQ] += size[rootOfP];
+
+		}else {
+			parents[rootOfQ] = rootOfP;
+			size[rootOfP] += size[rootOfQ];
+		}
 		count--;
 	}
 	public static void main(String[] args) {
 		int n = StdIn.readInt();
-		QuickUnionUF uf = new QuickUnionUF(n);
+		WeightedQuickUnion uf = new WeightedQuickUnion(n);
 		while (!StdIn.isEmpty()) {
 			int p = StdIn.readInt();
 			int q = StdIn.readInt();

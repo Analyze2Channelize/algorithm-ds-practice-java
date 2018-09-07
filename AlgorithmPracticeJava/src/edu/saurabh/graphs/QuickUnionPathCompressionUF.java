@@ -3,12 +3,12 @@ package edu.saurabh.graphs;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class QuickUnionUF {
+public class QuickUnionPathCompressionUF {
 
 	private int[] parents;
 	int count;
 
-	public QuickUnionUF(int N){
+	public QuickUnionPathCompressionUF(int N){
 		count = N;
 		parents = new int[N];
 		//initially each node in its own component
@@ -39,7 +39,13 @@ public class QuickUnionUF {
 		while(root!=parents[root]) {
 			root = parents[root];
 		}
-		return p;
+		// point every node along the path to root
+		while(p!=root) {
+			int newP = parents[p];
+			parents[p] = root;
+			p = newP;
+		}
+		return root;
 	}
 
 	public void union(int p,int q) {
@@ -53,7 +59,7 @@ public class QuickUnionUF {
 	}
 	public static void main(String[] args) {
 		int n = StdIn.readInt();
-		QuickUnionUF uf = new QuickUnionUF(n);
+		QuickUnionPathCompressionUF uf = new QuickUnionPathCompressionUF(n);
 		while (!StdIn.isEmpty()) {
 			int p = StdIn.readInt();
 			int q = StdIn.readInt();

@@ -3,18 +3,25 @@ package edu.saurabh.graphs;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class QuickUnionUF {
+public class WeightedQuickUnionPathCompressionUF {
 
 	private int[] parents;
+	private int[] size; // size of tree rooted at i
+
 	int count;
 
-	public QuickUnionUF(int N){
+	public WeightedQuickUnionPathCompressionUF(int N){
 		count = N;
 		parents = new int[N];
 		//initially each node in its own component
 		for(int i=0 ; i< N;i++) {
 			parents[i] =i;
+			size[i] = 1;
 		}
+	}
+
+	public int[] getSize() {
+		return size;
 	}
 
 	public int count() {
@@ -39,7 +46,13 @@ public class QuickUnionUF {
 		while(root!=parents[root]) {
 			root = parents[root];
 		}
-		return p;
+		// point every node along the path to root
+		while(p!=root) {
+			int newP = parents[p];
+			parents[p] = root;
+			p = newP;
+		}
+		return root;
 	}
 
 	public void union(int p,int q) {
@@ -48,12 +61,19 @@ public class QuickUnionUF {
 		int rootOfP = getRoot(p);
 		int rootOfQ = getRoot(q);
 		if(rootOfP == rootOfQ) return;
-		parents[rootOfP] = rootOfQ;
+		if(size[rootOfP] < size[rootOfQ]) {
+			parents[rootOfP] = rootOfQ;
+			size[rootOfQ] += size[rootOfP];
+
+		}else {
+			parents[rootOfQ] = rootOfP;
+			size[rootOfP] += size[rootOfQ];
+		}
 		count--;
 	}
 	public static void main(String[] args) {
 		int n = StdIn.readInt();
-		QuickUnionUF uf = new QuickUnionUF(n);
+		WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(n);
 		while (!StdIn.isEmpty()) {
 			int p = StdIn.readInt();
 			int q = StdIn.readInt();
