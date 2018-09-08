@@ -3,26 +3,25 @@ package edu.saurabh.graphs;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class WeightedQuickUnionPathCompressionUF {
+public class WeightedQuickUnionByHeightPathHalving {
 
 	private int[] parents;
-	private int[] size; // size of tree rooted at i
-
+	private int[] height; // size of tree rooted at i
 	int count;
 
-	public WeightedQuickUnionPathCompressionUF(int N){
+	public WeightedQuickUnionByHeightPathHalving(int N){
 		count = N;
 		parents = new int[N];
-		size = new int[N];
+		height = new int[N];
 		//initially each node in its own component
 		for(int i=0 ; i< N;i++) {
 			parents[i] =i;
-			size[i] = 1;
+			height[i] = 0;
 		}
 	}
 
-	public int[] getSize() {
-		return size;
+	public int[] getHeight() {
+		return height;
 	}
 
 	public int count() {
@@ -43,17 +42,11 @@ public class WeightedQuickUnionPathCompressionUF {
 	}
 
 	public int getRoot(int p) {
-		int root = p;
-		while(root!=parents[root]) {
-			root = parents[root];
+		while(p!=parents[p]) {
+			parents[p] = parents[parents[p]];
+			p = parents[p];
 		}
-		// point every node along the path to root
-		while(p!=root) {
-			int newP = parents[p];
-			parents[p] = root;
-			p = newP;
-		}
-		return root;
+		return p;
 	}
 
 	public void union(int p,int q) {
@@ -62,19 +55,21 @@ public class WeightedQuickUnionPathCompressionUF {
 		int rootOfP = getRoot(p);
 		int rootOfQ = getRoot(q);
 		if(rootOfP == rootOfQ) return;
-		if(size[rootOfP] < size[rootOfQ]) {
+		//shorter tree will point to taller one
+		if(height[rootOfP] < height[rootOfQ]) {
 			parents[rootOfP] = rootOfQ;
-			size[rootOfQ] += size[rootOfP];
-
+		}else if(height[rootOfP] > height[rootOfQ]) {
+			parents[rootOfQ] = rootOfP;
 		}else {
 			parents[rootOfQ] = rootOfP;
-			size[rootOfP] += size[rootOfQ];
+			// increment the height of parent by 1
+			height[rootOfP]++;
 		}
 		count--;
 	}
 	public static void main(String[] args) {
 		int n = StdIn.readInt();
-		WeightedQuickUnionPathCompressionUF uf = new WeightedQuickUnionPathCompressionUF(n);
+		WeightedQuickUnionByHeightPathHalving uf = new WeightedQuickUnionByHeightPathHalving(n);
 		while (!StdIn.isEmpty()) {
 			int p = StdIn.readInt();
 			int q = StdIn.readInt();

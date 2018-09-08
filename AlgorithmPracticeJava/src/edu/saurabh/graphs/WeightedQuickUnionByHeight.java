@@ -12,6 +12,7 @@ public class WeightedQuickUnionByHeight {
 	public WeightedQuickUnionByHeight(int N){
 		count = N;
 		parents = new int[N];
+		height = new int[N];
 		//initially each node in its own component
 		for(int i=0 ; i< N;i++) {
 			parents[i] =i;
