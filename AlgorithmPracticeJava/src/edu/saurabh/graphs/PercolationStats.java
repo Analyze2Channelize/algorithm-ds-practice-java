@@ -5,10 +5,10 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-	private double mean;
-	private double stddev;
-	private double confidenceLo;
-	private double confidenceHi;
+	private final double mean;
+	private final double stddev;
+	private final double confidenceLo;
+	private final double confidenceHi;
 	public PercolationStats(int n, int trials) {
 		if (n <= 0 || trials <=0) {
 			throw new IllegalArgumentException("illegal");
@@ -23,7 +23,7 @@ public class PercolationStats {
 				// if we are here we got a blocked site
 				p.open(row, col);
 				if(p.percolates()) {
-					percolationThresholds[i] = (double)p.numOfOpenSites/(n*n);
+					percolationThresholds[i] = (double)p.numberOfOpenSites()/(n*n);
 					break;
 				}
 
