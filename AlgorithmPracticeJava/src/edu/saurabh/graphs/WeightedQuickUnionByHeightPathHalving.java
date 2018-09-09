@@ -6,22 +6,22 @@ import edu.princeton.cs.algs4.StdOut;
 public class WeightedQuickUnionByHeightPathHalving {
 
 	private int[] parents;
-	private int[] height; // size of tree rooted at i
+	private int[] rank; // size of tree rooted at i
 	int count;
 
 	public WeightedQuickUnionByHeightPathHalving(int N){
 		count = N;
 		parents = new int[N];
-		height = new int[N];
+		rank = new int[N];
 		//initially each node in its own component
 		for(int i=0 ; i< N;i++) {
 			parents[i] =i;
-			height[i] = 0;
+			rank[i] = 0;
 		}
 	}
 
 	public int[] getHeight() {
-		return height;
+		return rank;
 	}
 
 	public int count() {
@@ -56,14 +56,14 @@ public class WeightedQuickUnionByHeightPathHalving {
 		int rootOfQ = getRoot(q);
 		if(rootOfP == rootOfQ) return;
 		//shorter tree will point to taller one
-		if(height[rootOfP] < height[rootOfQ]) {
+		if(rank[rootOfP] < rank[rootOfQ]) {
 			parents[rootOfP] = rootOfQ;
-		}else if(height[rootOfP] > height[rootOfQ]) {
+		}else if(rank[rootOfP] > rank[rootOfQ]) {
 			parents[rootOfQ] = rootOfP;
 		}else {
 			parents[rootOfQ] = rootOfP;
 			// increment the height of parent by 1
-			height[rootOfP]++;
+			rank[rootOfP]++;
 		}
 		count--;
 	}
