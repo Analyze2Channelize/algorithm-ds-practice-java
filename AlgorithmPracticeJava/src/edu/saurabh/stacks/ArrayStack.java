@@ -1,46 +1,95 @@
 package edu.saurabh.stacks;
 
-import java.util.Arrays;
-import java.util.EmptyStackException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class ArrayStack<E> {
-	private Object[] elements ;
-	private static final int  DEFAULT_INITIAL_CAPACITY = 16;
-	private int size=0;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
-	public ArrayStack() {
-		elements = new Object[DEFAULT_INITIAL_CAPACITY];
-	}
-	public void push(Object e) {
-		ensureCapacity();
-		elements[size++]=e;
-	}
-	private void ensureCapacity() {
-		if(elements.length == size) {
-			elements = Arrays.copyOf(elements, 2*size+1);
-		}
-	}
+public class ArrayStack<Item> implements Iterable<Item> {
+    private Item[] a;         // array of items
+    private int n;            // number of elements on stack
 
-	public boolean isEmpty() {
-		return size==0;
-	}
 
-	@SuppressWarnings("unchecked")
-	public  E pop() {
-		if(size==0) {
-			throw new EmptyStackException();
-		}
+    public ArrayStack() {
+        a = (Item[]) new Object[2];
+        n = 0;
+    }
 
-		E top =  (E)(elements[--size]);
-		elements[size] = null;
-		return top;
-	}
+    public boolean isEmpty() {
+        return n == 0;
+    }
 
-	public static void main(String[] args) {
-		ArrayStack<String> stack = new ArrayStack<String>();
-		stack.push("S");
-		stack.push("K");
-		while (!stack.isEmpty())
-			System.out.println(stack.pop().toUpperCase());
-	}
+ 
+    public int size() {
+        return n;
+    }
+
+
+    private void resize(int capacity) {
+        assert capacity >= n;
+        a = java.util.Arrays.copyOf(a, capacity);
+    }
+
+
+    public void push(Item item) {
+        if (n == a.length) resize(2*a.length);    // double size of array if necessary
+        a[n++] = item;                            // add item
+    }
+
+
+    public Item pop() {
+        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
+        Item item = a[n-1];
+        a[n-1] = null;                              // to avoid loitering
+        n--;
+        // shrink size of array if necessary
+        if (n > 0 && n == a.length/4) resize(a.length/2);
+        return item;
+    }
+
+    public Item peek() {
+        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
+        return a[n-1];
+    }
+
+ 
+    public Iterator<Item> iterator() {
+        return new ReverseArrayIterator(n);
+    }
+
+    // an iterator, doesn't implement remove() since it's optional
+    private class ReverseArrayIterator implements Iterator<Item> {
+        private int i;
+
+        public ReverseArrayIterator(int n) {
+            i = n-1;
+        }
+
+        public boolean hasNext() {
+            return i >= 0;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+        public Item next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            return a[i--];
+        }
+    }
+
+
+
+    public static void main(String[] args) {
+    	ArrayStack<String> stack = new ArrayStack<String>();
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            if (!item.equals("-")) stack.push(item);
+            else if (!stack.isEmpty()) StdOut.print(stack.pop() + " ");
+        }
+        StdOut.println("(" + stack.size() + " left on stack)");
+    }
 }
+
