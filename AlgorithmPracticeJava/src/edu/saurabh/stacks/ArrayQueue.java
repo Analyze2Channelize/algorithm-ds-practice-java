@@ -75,21 +75,14 @@ public class ArrayQueue<Item> implements Iterable<Item> {
 
  
     public Iterator<Item> iterator() {
-        return new ArrayQueueIterator(head,tail);
+        return new ArrayQueueIterator();
     }
 
     // an iterator, doesn't implement remove() since it's optional
     private class ArrayQueueIterator implements Iterator<Item> {
-        private int start;
-        private int end;
-
-        public ArrayQueueIterator(int first,int last) {
-            this.start = first;
-            this.end = last;
-        }
-
+    	private int i =0;
         public boolean hasNext() {
-            return start!=end;
+            return head < tail;
         }
 
         public void remove() {
@@ -98,7 +91,9 @@ public class ArrayQueue<Item> implements Iterable<Item> {
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            return a[start++];
+            Item item = a[(i + head) % a.length];
+            i++;
+            return item;
         }
     }
 
