@@ -1,4 +1,4 @@
-package edu.saurabh.stacks;
+package edu.saurabh.stacksNQueues;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -50,7 +50,6 @@ public class ArrayQueue<Item> implements Iterable<Item> {
     	a[tail++] = item;
     	if(tail ==a.length) tail =0;
     	n++;
-    	System.out.println(Arrays.toString(a));
        
     }
 
@@ -64,7 +63,6 @@ public class ArrayQueue<Item> implements Iterable<Item> {
         if(head == a.length) head = 0;
         // shrink size of array if necessary
         if (n > 0 && n == a.length/4) resize(a.length/2);
-        System.out.println(Arrays.toString(a));
         return item;
     }
 

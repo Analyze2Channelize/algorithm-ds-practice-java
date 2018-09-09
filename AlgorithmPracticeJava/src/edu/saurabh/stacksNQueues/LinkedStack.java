@@ -1,25 +1,26 @@
-package edu.saurabh.stacks;
+package edu.saurabh.stacksNQueues;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class LinkedQueue<ITEM> implements Iterable<ITEM> {
-    private Node<ITEM> first;     // start of queue
-    private Node<ITEM> last;	// end of queue
+public class LinkedStack<ITEM> implements Iterable<ITEM> {
+    private Node<ITEM> first;     // top of stack
     private int n;                // size of the stack
+    int numOfPushPop;
 
     // helper linked list class
     private static class Node<ITEM> {
         private ITEM item;
         private Node<ITEM> next;
     }
-    public LinkedQueue() {
+    public LinkedStack() {
         first = null;
-        last = null;
         n = 0;
+        numOfPushPop=0;
     }
 
     public boolean isEmpty() {
@@ -30,30 +31,25 @@ public class LinkedQueue<ITEM> implements Iterable<ITEM> {
         return n;
     }
 
-    public void enqueue(ITEM item) {
-        Node<ITEM> oldLast = last;
-        last = new Node<ITEM>();
-        last.item = item;
-        last.next = null;
-        if(isEmpty()) {
-        	first = last;
-        }else {
-        	oldLast.next = last;
-        }
-        
+    public void push(ITEM item) {
+        Node<ITEM> oldfirst = first;
+        first = new Node<ITEM>();
+        first.item = item;
+        first.next = oldfirst;
         n++;
+        numOfPushPop++;
     }
 
-    public ITEM dequeue() {
-        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+    public ITEM pop() {
+        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
         ITEM item = first.item;        // save item to return
         first = first.next;            // delete first node
         n--;
-        if(isEmpty()) last =null;
+        numOfPushPop++;
         return item;                   // return the saved item
     }
     public ITEM peek() {
-        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
         return first.item;
     }
 
@@ -68,18 +64,21 @@ public class LinkedQueue<ITEM> implements Iterable<ITEM> {
        
 
     public Iterator<ITEM> iterator() {
-        return new ListIterator<ITEM>(first);
+        return new ListIterator<ITEM>(first,numOfPushPop);
     }
 
     // an iterator, doesn't implement remove() since it's optional
     private class ListIterator<ITEM> implements Iterator<ITEM> {
         private Node<ITEM> current;
+        private int numOfPushPopAtStartOfIteration;
 
-        public ListIterator(Node<ITEM> first) {
+        public ListIterator(Node<ITEM> first,int numOfPushPop) {
             current = first;
+            this.numOfPushPopAtStartOfIteration = numOfPushPop;
         }
 
         public boolean hasNext() {
+        	if(numOfPushPopAtStartOfIteration != numOfPushPop) throw new ConcurrentModificationException();
             return current != null;
         }
 
@@ -88,6 +87,7 @@ public class LinkedQueue<ITEM> implements Iterable<ITEM> {
         }
 
         public ITEM next() {
+        	if(numOfPushPopAtStartOfIteration != numOfPushPop) throw new ConcurrentModificationException();
             if (!hasNext()) throw new NoSuchElementException();
             ITEM item = current.item;
             current = current.next; 
@@ -97,15 +97,15 @@ public class LinkedQueue<ITEM> implements Iterable<ITEM> {
 
 
     public static void main(String[] args) {
-    	LinkedQueue<String> queue = new LinkedQueue<String>();
+    	LinkedStack<String> stack = new LinkedStack<String>();
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
             if (!item.equals("-"))
-            	queue.enqueue(item);
-            else if (!queue.isEmpty())
-                StdOut.print(queue.dequeue() + " ");
+                stack.push(item);
+            else if (!stack.isEmpty())
+                StdOut.print(stack.pop() + " ");
         }
-        StdOut.println("(" + queue.size() + " left on queue)");
+        StdOut.println("(" + stack.size() + " left on stack)");
     }
 }
 

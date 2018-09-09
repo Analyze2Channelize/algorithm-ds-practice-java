@@ -1,4 +1,4 @@
-package edu.saurabh.stacks;
+package edu.saurabh.stacksNQueues;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -6,8 +6,9 @@ import java.util.NoSuchElementException;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class LinkedStack<ITEM> implements Iterable<ITEM> {
-    private Node<ITEM> first;     // top of stack
+public class LinkedQueue<ITEM> implements Iterable<ITEM> {
+    private Node<ITEM> first;     // start of queue
+    private Node<ITEM> last;	// end of queue
     private int n;                // size of the stack
 
     // helper linked list class
@@ -15,8 +16,9 @@ public class LinkedStack<ITEM> implements Iterable<ITEM> {
         private ITEM item;
         private Node<ITEM> next;
     }
-    public LinkedStack() {
+    public LinkedQueue() {
         first = null;
+        last = null;
         n = 0;
     }
 
@@ -28,23 +30,30 @@ public class LinkedStack<ITEM> implements Iterable<ITEM> {
         return n;
     }
 
-    public void push(ITEM item) {
-        Node<ITEM> oldfirst = first;
-        first = new Node<ITEM>();
-        first.item = item;
-        first.next = oldfirst;
+    public void enqueue(ITEM item) {
+        Node<ITEM> oldLast = last;
+        last = new Node<ITEM>();
+        last.item = item;
+        last.next = null;
+        if(isEmpty()) {
+        	first = last;
+        }else {
+        	oldLast.next = last;
+        }
+        
         n++;
     }
 
-    public ITEM pop() {
-        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
+    public ITEM dequeue() {
+        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         ITEM item = first.item;        // save item to return
         first = first.next;            // delete first node
         n--;
+        if(isEmpty()) last =null;
         return item;                   // return the saved item
     }
     public ITEM peek() {
-        if (isEmpty()) throw new NoSuchElementException("Stack underflow");
+        if (isEmpty()) throw new NoSuchElementException("Queue underflow");
         return first.item;
     }
 
@@ -88,15 +97,15 @@ public class LinkedStack<ITEM> implements Iterable<ITEM> {
 
 
     public static void main(String[] args) {
-    	LinkedStack<String> stack = new LinkedStack<String>();
+    	LinkedQueue<String> queue = new LinkedQueue<String>();
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
             if (!item.equals("-"))
-                stack.push(item);
-            else if (!stack.isEmpty())
-                StdOut.print(stack.pop() + " ");
+            	queue.enqueue(item);
+            else if (!queue.isEmpty())
+                StdOut.print(queue.dequeue() + " ");
         }
-        StdOut.println("(" + stack.size() + " left on stack)");
+        StdOut.println("(" + queue.size() + " left on queue)");
     }
 }
 

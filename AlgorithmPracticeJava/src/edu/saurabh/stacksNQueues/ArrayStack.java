@@ -1,4 +1,4 @@
-package edu.saurabh.stacks;
+package edu.saurabh.stacksNQueues;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
