@@ -5,36 +5,28 @@ import java.util.Comparator;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class InsertionSort {
+public class ShellSort {
 
     // This class should not be instantiated.
-    private InsertionSort() { }
+    private ShellSort() { }
 
     public static void sort(Comparable[] a) {
     	int n = a.length;
-    	for(int i=0;i<n;i++) {
-    		for(int j=i;j>0 && less(a[j],a[j-1]) ; j--) {
-    				exch(a,j,j-1);
-    		}
+    	
+    	int h=1;
+    	while (h < n/3) h = 3*h + 1; 
+    	
+    	while(h>=1) {
+    		for(int i=0;i<n;i++) {
+        		for(int j=i;j>0 && less(a[j],a[j-1]) ; j--) {
+        				exch(a,j,j-1);
+        		}
+        	}	
+    		h = h/3;
     	}
+    	
     }
 
-  
-    public static void sort(Object[] a, Comparator comparator) {
-    	int n = a.length;
-    	for(int i=0;i<n;i++) {
-    		for(int j=i;j>0;j--) {
-    			if(less(comparator,a[j],a[j-1])) {
-    				exch(a,j,j-1);
-    			}else {
-    				break;
-    			}
-    		}
-    		assert(isSorted(a,comparator,0,i));
-    	}
-    	assert(isSorted(a,comparator,0,n));
-         
-    }
 
 
    /***************************************************************************
@@ -88,6 +80,11 @@ public class InsertionSort {
         return true;
     }
 
+    private static boolean isHsorted(Comparable[] a, int h) {
+        for (int i = h; i < a.length; i++)
+            if (less(a[i], a[i-h])) return false;
+        return true;
+    }
 
 
     // print array to standard output
@@ -100,7 +97,7 @@ public class InsertionSort {
 
     public static void main(String[] args) {
         String[] a = StdIn.readAllStrings();
-        InsertionSort.sort(a);
+        ShellSort.sort(a);
         show(a);
     }
 }
