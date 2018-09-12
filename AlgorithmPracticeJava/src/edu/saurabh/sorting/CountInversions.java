@@ -2,31 +2,31 @@ package edu.saurabh.sorting;
 
 import java.util.Comparator;
 
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class MergeSort {
+public class CountInversions {
 
-	public static void merge(Comparable[] array,Comparable[] aux,int low ,int mid, int high) {
+	public static int merge(Comparable[] array,Comparable[] aux,int low ,int mid, int high) {
 
-		isSorted(array, low, mid);
-		isSorted(array, mid+1, high);
 		for ( int k=low;k<=high;k++) {
 			aux[k] = array[k];
 		}
 
 		int i = low;
 		int j = mid+1;
+		int count=0;
 		for(int k =low;k<=high;k++) {
 			if(i>mid) array[k] = aux[j++];
 			else if( j> high) array[k] = aux[i++];
-			else if(less(aux[j],aux[i])) array[k] = aux[j++];
+			else if(less(aux[j],aux[i])) {
+				array[k] = aux[j++];
+				count += mid-i+1;
+			}
 			else array[k] = aux[i++];
 		}
-		isSorted(array, low, high);
+		return count;
 	}
 
-	
 
 	private static boolean less(Comparable v, Comparable w) {
 		return v.compareTo(w) < 0;
@@ -44,20 +44,18 @@ public class MergeSort {
 		return true;
 	}
 
-	private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
-		if (hi <= lo) return;
+	private static int sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
+		if (hi <= lo) return 0;
 		int mid = lo + (hi - lo) / 2;
-		sort(a, aux, lo, mid);
-		sort(a, aux, mid + 1, hi);
-		// practical improvement, if largest element of left half is smaller than smallest element of second half , return
-		if(less(a[mid],a[mid+1])) return;
-		merge(a, aux, lo, mid, hi);
+		int count1 = sort(a, aux, lo, mid);
+		int count2 = sort(a, aux, mid + 1, hi);
+		int count3= merge(a, aux, lo, mid, hi);
+		return count1+count2+count3;
 	}
 
-	public static void mergeSort(Comparable[] a) {
+	public static int inversionCount(Comparable[] a) {
 		Comparable[] aux = new Comparable[a.length];
-		sort(a, aux, 0, a.length-1);
-		assert isSorted(a);
+		return sort(a, aux, 0, a.length - 1);
 	}
 
 
@@ -73,10 +71,8 @@ public class MergeSort {
 	}
 
 	public static void main(String[] args) {
-		String[] a = StdIn.readAllStrings();
-		MergeSort.mergeSort(a);
-		show(a);
-		
+		Comparable[] a = {50, 61, 44, 32, 99, 87, 51, 50, 50, 12};
+		System.out.println(inversionCount(a));
 	}
 
 
