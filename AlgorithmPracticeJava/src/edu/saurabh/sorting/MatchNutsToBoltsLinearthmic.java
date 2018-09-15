@@ -72,19 +72,21 @@ public class MatchNutsToBoltsLinearthmic {
 	}
 
 	/*find the bolt which exactly fits the given nut and return its position, O(n)*/
-	private static int partition(Comparable[] array,int lo, int hi,Comparable pivot) {
-		int i = lo;
-		int j = hi+1;
-		while (true) {
-			// traverse Array from left to right ,stop when element is equal or greater than Pivot
-			while (less(array[++i],pivot)) if (i == hi) break;
-			// traverse Array from right to left ,stop when a element is equal or less than Pivot
-			while (less(pivot,array[--j])) if (j == lo) break;
-			if (i >= j) break;
-			exch(array,i,j);
+	private static int partition(Comparable[] arr, int low, int high, Comparable pivot)
+	{
+		int i = low;
+		for (int j = low; j < high; j++)
+		{
+			if (arr[j].compareTo(pivot) <0){
+				exch(arr,i,j);
+				i++;
+			} else if(arr[j].compareTo(pivot)==0){
+				exch(arr,j,high);
+				j--;
+			}
 		}
-		return j;
-
+		exch(arr,i,high);
+		return i;
 	}
 	// exchange a[i] and a[j]
 	private static void exch(Object[] a, int i, int j) {
