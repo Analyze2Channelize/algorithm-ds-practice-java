@@ -54,7 +54,7 @@ public class MergeSort {
 		merge(a, aux, lo, mid, hi);
 	}
 
-	public static void mergeSort(Comparable[] a) {
+	public static void sort(Comparable[] a) {
 		Comparable[] aux = new Comparable[a.length];
 		sort(a, aux, 0, a.length-1);
 		assert isSorted(a);
@@ -74,7 +74,7 @@ public class MergeSort {
 
 	public static void main(String[] args) {
 		String[] a = StdIn.readAllStrings();
-		MergeSort.mergeSort(a);
+		MergeSort.sort(a);
 		show(a);
 		
 	}
