@@ -49,8 +49,6 @@ public class MergeSort {
 		int mid = lo + (hi - lo) / 2;
 		sort(a, aux, lo, mid);
 		sort(a, aux, mid + 1, hi);
-		// practical improvement, if largest element of left half is smaller than smallest element of second half , return
-		if(less(a[mid],a[mid+1])) return;
 		merge(a, aux, lo, mid, hi);
 	}
 

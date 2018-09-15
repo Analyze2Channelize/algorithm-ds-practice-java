@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.StdRandom;
 
 public class QuickSelect {
 
-	public static int partition(Comparable[] array,int lo, int hi) {
+	private static int partition(Comparable[] array,int lo, int hi) {
 		int i = lo,j =hi+1;
 		Comparable pivot = array[lo];
 		while(true) {
@@ -43,7 +43,7 @@ public class QuickSelect {
 		return true;
 	}
 
-	private static Comparable select(Comparable[] a, int k) {
+	public static Comparable select(Comparable[] a, int k) {
 		if (k < 0 || k >= a.length) {
             throw new IllegalArgumentException("index is not between 0 and " + a.length + ": " + k);
         }

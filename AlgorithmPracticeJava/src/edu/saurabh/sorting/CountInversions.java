@@ -6,7 +6,7 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class CountInversions {
 
-	public static int merge(Comparable[] array,Comparable[] aux,int low ,int mid, int high) {
+	public static int mergeAndCountInversions(Comparable[] array,Comparable[] aux,int low ,int mid, int high) {
 
 		for ( int k=low;k<=high;k++) {
 			aux[k] = array[k];
@@ -44,18 +44,18 @@ public class CountInversions {
 		return true;
 	}
 
-	private static int sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
+	private static int countInversion(Comparable[] a, Comparable[] aux, int lo, int hi) {
 		if (hi <= lo) return 0;
 		int mid = lo + (hi - lo) / 2;
-		int count1 = sort(a, aux, lo, mid);
-		int count2 = sort(a, aux, mid + 1, hi);
-		int count3= merge(a, aux, lo, mid, hi);
+		int count1 = countInversion(a, aux, lo, mid);
+		int count2 = countInversion(a, aux, mid + 1, hi);
+		int count3= mergeAndCountInversions(a, aux, lo, mid, hi);
 		return count1+count2+count3;
 	}
 
 	public static int inversionCount(Comparable[] a) {
 		Comparable[] aux = new Comparable[a.length];
-		return sort(a, aux, 0, a.length - 1);
+		return countInversion(a, aux, 0, a.length - 1);
 	}
 
 
