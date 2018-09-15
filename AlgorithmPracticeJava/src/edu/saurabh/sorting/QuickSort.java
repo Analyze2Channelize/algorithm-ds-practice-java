@@ -10,11 +10,11 @@ public class QuickSort {
 		int i = lo,j =hi+1;
 		Comparable pivot = array[lo];
 		while(true) {
-			// traverse left to right ,stop when current element is equal or greater
+			// traverse left to right ,stop when current element is equal or greater than pivot
 			while(less(array[++i],pivot)) {
 				if(i==hi) break;
 			}
-			// traverse right to left , stop when current element is equal or lesser
+			// traverse right to left , stop when current element is equal or lesser than pivot
 			while(less(pivot,array[--j])) {
 				if(j==lo) break;
 			}
