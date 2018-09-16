@@ -10,10 +10,11 @@ public class HeapSortInPlace {
 	public static void sort(Comparable[] pq) {
 		int n = pq.length;
 		/*bottom up heap-construction, 
-		 * all nodes to the right of middle element are already heaps,so we just need to pink their roots from bottom to top and sink them*/
+		 * all nodes to the right of middle element are already heaps,
+		 * so we just need to pink their roots from bottom to top and sink them such that MaxHeap is generated*/
 		for (int k = n/2; k >= 1; k--)
 			sink(pq, k, n);
-		/*sortdown phase, repeatedly swap largest with smallest and sink largest*/
+		/*sortdown phase, repeatedly swap smallest with largest and sink smallest*/
 		while (n > 1) {
 			exch(pq, 1, n--);
 			sink(pq, 1, n);
@@ -21,6 +22,7 @@ public class HeapSortInPlace {
 	}
 
 
+	// since we want ascending order sort, we use MaxHeap sink. In sortdown phase, consecutive largest will be thrown to end of array
 	private static void sink(Comparable[] pq, int k, int n) {
 		while (2*k <= n) {
 			int j = 2*k;
