@@ -24,6 +24,24 @@ public class BinarySearch {
 		return -1;
 
 	}
+	
+	public static int rank(Comparable[] a,Comparable k) {
+		// assume array is sorted in ascending order, return number of elements < k
+		int lo=0,hi = a.length-1;
+		while(lo<=hi) {
+			int mid = lo + (hi-lo)/2;
+			int cmp = k.compareTo(a[mid]);
+			if(cmp <0){
+				hi = mid-1;
+			}else if(cmp>0) {
+				lo=mid+1;
+			}else {
+				return mid;
+			}	
+		}
+		return lo;
+
+	}
 
 	private static boolean isSorted(Comparable[] a) {
 		return isSorted(a, 0, a.length - 1);
