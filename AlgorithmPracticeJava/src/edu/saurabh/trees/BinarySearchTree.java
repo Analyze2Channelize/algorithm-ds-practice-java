@@ -106,7 +106,7 @@ public class BinarySearchTree<Key extends Comparable<Key>,Value>  {
 			// Hibbard deletion
 			Node t = x;
 			x = min(t.right);// minimum element of right subtree
-			x.right = deleteMin(t.right);// root of subtree after deleting min
+			x.right = deleteMin(t.right);// parent of subtree after deleting min
 			x.left = t.left;//original left of node to be deleted
 		}
 		x.size = size(x.left) + size(x.right) + 1;
