@@ -31,7 +31,7 @@ public class BinarySearchTree<Key extends Comparable<Key>,Value>  {
 
 	private int size(Node x) {
 		if(x==null) return 0;
-		return x.size;
+		else return x.size;
 	}
 
 	public boolean isEmpty() {
@@ -98,12 +98,16 @@ public class BinarySearchTree<Key extends Comparable<Key>,Value>  {
 	private Node delete(Node x, Key key) {
 
 		if(x==null) return null;
-		if(key.compareTo(x.key) <0) {
+		int cmp = key.compareTo(x.key);
+		
+		if(cmp <0) {
 			x.left = delete(x.left,key);
-		}else if(key.compareTo(x.key) >0) {
+		}else if(cmp >0) {
 			x.right = delete(x.right,key);
 		}else {
 			// Hibbard deletion
+			if(x.right==null) return x.left;
+			if(x.left==null) return x.right;
 			Node t = x;
 			x = min(t.right);// minimum element of right subtree
 			x.right = deleteMin(t.right);// parent of subtree after deleting min
