@@ -35,9 +35,8 @@ public class QuickUnionUF {
 	}
 
 	public int getRoot(int p) {
-		int root = p;
-		while(root!=parents[root]) {
-			root = parents[root];
+		while(p!=parents[p]) {
+			p = parents[p];
 		}
 		return p;
 	}
