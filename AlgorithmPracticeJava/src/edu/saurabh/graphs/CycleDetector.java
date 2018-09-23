@@ -3,14 +3,14 @@ package edu.saurabh.graphs;
 import edu.princeton.cs.algs4.Stack;
 import edu.princeton.cs.algs4.StdOut;
 
-public class CycleDetection {
+public class CycleDetector {
 
 	private boolean[] marked;
 	private int[] edgeTo;
 	private Stack<Integer> cycle;
 
 
-	public CycleDetection(AdjacencyListGraph G) {
+	public CycleDetector(AdjacencyListGraph G) {
 		if(hasSelfLoop(G)) return;
 		if(hasParallelEdges(G)) return;
 
@@ -131,7 +131,7 @@ public class CycleDetection {
 	}
 
 	private static void detectAndPrintCycle(AdjacencyListGraph selfLoopG) {
-		CycleDetection detector = new CycleDetection(selfLoopG);
+		CycleDetector detector = new CycleDetector(selfLoopG);
 		if (detector.hasCycle()) {
 			for (int v : detector.cycle()) {
 				StdOut.print(v + " ");
