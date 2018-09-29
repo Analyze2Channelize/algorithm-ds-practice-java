@@ -29,14 +29,15 @@ public class AllPaths {
 			numberOfPaths++;
 		}
 
-		// consider all neighbors that would continue path with repeating a node
+		// consider all neighbors that would continue path without repeating a node
 		for(int w:G.adj(v)) {
 			if(!onPath[w]) {
 				dfs(G,w,t);
 			}
 		}
 
-		// done exploring from v, so remove from path
+		//BACKTRACKING
+		//done exploring from v, so remove from path
 		path.pop();
 		onPath[v]= false;
 
