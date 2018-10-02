@@ -109,7 +109,7 @@ public class AdjacencyListDigraph {
 
 	public int indegree(int v) {
 		validateVertex(v);
-		return indegree(v);
+		return indegree[v];
 	}
 
 	public int outdegree(int v) {

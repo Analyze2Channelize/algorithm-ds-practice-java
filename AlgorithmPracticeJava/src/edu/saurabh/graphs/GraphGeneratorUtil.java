@@ -401,8 +401,8 @@ public class GraphGeneratorUtil {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        int V = Integer.parseInt(args[0]);
-        int E = Integer.parseInt(args[1]);
+        int V = 15;
+        int E = 20;
         int V1 = V/2;
         int V2 = V - V1;
 
