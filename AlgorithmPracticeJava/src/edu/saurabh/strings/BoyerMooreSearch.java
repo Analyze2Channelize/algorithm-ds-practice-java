@@ -85,7 +85,7 @@ public class BoyerMooreSearch {
 		char[] pattern = pat.toCharArray();
 		char[] text    = txt.toCharArray();
 
-		BoyerMooreSearch boyermoore1 = new BoyerMooreSearch(pat);
+		BoyerMooreSearch boyermoore1 =  new BoyerMooreSearch(pat);
 		BoyerMooreSearch boyermoore2 = new BoyerMooreSearch(pattern, 256);
 		int offset1 = boyermoore1.search(txt);
 		int offset2 = boyermoore2.search(text);
