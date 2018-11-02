@@ -3,6 +3,8 @@ package edu.saurabh.strings;
 import java.math.BigInteger;
 import java.util.Random;
 
+import edu.princeton.cs.algs4.StdOut;
+
 public class RabinKarpSearch {
 
 	private String pat;      
@@ -68,6 +70,23 @@ public class RabinKarpSearch {
 				return offset;
 		}
 		return n;
+	}
+
+	public static void main(String[] args) {
+		String pat = "Sax";
+		String txt = "SaurabhSaxena";
+
+		RabinKarpSearch searcher = new RabinKarpSearch(pat);
+		int offset = searcher.search(txt);
+
+		// print results
+		StdOut.println("text:    " + txt);
+
+		// from brute force search method 1
+		StdOut.print("pattern: ");
+		for (int i = 0; i < offset; i++)
+			StdOut.print(" ");
+		StdOut.println(pat);
 	}
 
 }
